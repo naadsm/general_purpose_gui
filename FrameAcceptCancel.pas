@@ -2,13 +2,13 @@
 FrameAcceptCancel.pas/dfm
 -------------------------
 Begin: 2005/11/10
-Last revision: $Date: 2013-06-27 19:11:21 $ $Author: areeves $
-Version number: $Revision: 1.6.14.2 $
+Last revision: $Date: 2011-01-26 04:33:22 $ $Author: areeves $
+Version number: $Revision: 1.6.20.1 $
 Project: APHI General Purpose Delphi Libary
 Website: http://www.naadsm.org/opensource/delphi/
 Author: Aaron Reeves <Aaron.Reeves@ucalgary.ca>
 --------------------------------------------------
-Copyright (C) 2005 - 2010 Colorado State University
+Copyright (C) 2005 - 2010 Animal Population Health Institute, Colorado State University
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General
 Public License as published by the Free Software Foundation; either version 2 of the License, or

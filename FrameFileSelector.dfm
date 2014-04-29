@@ -29,7 +29,7 @@ object FrameFileSelector: TFrameFileSelector
   end
   object SaveDialog1: TSaveDialog
     Filter = '*.*|All files|*.csv|Comma separated values'
-	Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
     Left = 150
     Top = 16
   end

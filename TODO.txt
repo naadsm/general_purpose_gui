@@ -1,4 +1,0 @@
-Delete file FormAppUpdate.dfm
-Delete file FormAppUpdate.pas
-Delete file FormRegistration.dfm
-Delete file FormRegistration.pas

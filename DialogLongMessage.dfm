@@ -1,6 +1,6 @@
 object DialogLongMessage: TDialogLongMessage
-  Left = 790
-  Top = 62
+  Left = 691
+  Top = 54
   Width = 552
   Height = 682
   Caption = 'Form1'
