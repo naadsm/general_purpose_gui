@@ -1,21 +1,31 @@
-unit DialogLongMessage;
-
-(*
+{*
 DialogLongMessage.pas/dfm
 -------------------------
 Begin: 2005/06/20
-Last revision: $Date: 2008/03/12 22:10:42 $ $Author: areeves $
-Version number: $Revision: 1.12 $
-Project: NAADSM
-Website: http://www.naadsm.org
-Author: Aaron Reeves <Aaron.Reeves@colostate.edu>
+Last revision: $Date: 2011-09-30 19:12:57 $ $Author: areeves $
+Version number: $Revision: 1.19 $
+Project: APHI General Purpose Delphi Libary
+Website: http://www.naadsm.org/opensource/delphi/
+Author: Aaron Reeves <Aaron.Reeves@ucalgary.ca>
 --------------------------------------------------
-Copyright (C) 2005 - 2008 Animal Population Health Institute, Colorado State University
+Copyright (C) 2005 - 2013 NAADSM Development Team
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General
 Public License as published by the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
+---------------------------------------------------
+
+Used by many of the sm_forms units to display errors or warnings and present information to the user.
+Long multi-line messages can be displayed and the message contents can be copied to the clipboard.
+
+}
+
+(*
+  Documentation generation tags begin with {* or ///
+  Replacing these with (* or // foils the documentation generator
 *)
+
+unit DialogLongMessage;
 
 interface
 
@@ -33,7 +43,13 @@ interface
     ExtCtrls
   ;
 
-  type TDialogLongMessage = class( TForm )
+  type
+  {*
+    Unit for displaying messages at runtime, inherits from TForm.
+    Long multi-line messages can be displayed with scroll control and the
+    message contents can be copied to the clipboard.
+  }
+  TDialogLongMessage = class( TForm )
       mmoLongMessage: TMemo;
       pnlBase: TPanel;
       pnlButtons: TPanel;
@@ -51,22 +67,39 @@ interface
       procedure btnCopyClick(Sender: TObject);
 
     protected
+      _closeFormOnOK: boolean;
+
+      procedure initialize();
       procedure translateUI();
-      
+
     public
+      constructor create( AOwner: TComponent ); overload; override;
+
       { Creates the form with the designated caption, header, and message. }
       constructor create(
         AOwner: TComponent;
         cap: string = '';
         header: string = '';
         msg: string = ''
-      ); reintroduce;
+      ); reintroduce; overload;
 
       { Sets the text of the long message to display. }
       procedure setMessage( msg: string );
+      procedure appendMessage( msg: string );
 
       { Sets the text of the header. }
       procedure setHeader( header: string );
+
+      { Clears the contents of the form. }
+      procedure clear();
+
+      procedure disableFormClose();
+      procedure enableFormClose();
+
+      procedure show( const alwaysOnTop: boolean );
+
+      property header: string write setHeader;
+      property msg: string write setMessage;
     end
   ;
 
@@ -78,12 +111,22 @@ implementation
 	uses
   	ControlUtils,
     MyStrUtils,
-    GuiStrUtils,
     I88n
   ;
 
+  constructor TDialogLongMessage.create( AOwner: TComponent );
+    begin
+    	inherited create( AOwner );
+      initialize();
+    end
+  ;
+
   {*
-    Creates the form with the designated caption, header (in pnlHeader), and message.
+    Creates the form with the designated form caption, header (in pnlHeader), and message.
+    @param AOwner Form that owns the message dialog
+    @param cap text to be displayed in the form caption area to identify the subject to the user
+    @param header A place to put a longer directive to the user than can be displayed in the caption
+    @param msg some multi-line message; perhaps the logged outcome from a process, or the contents of a text file
   }
 	constructor TDialogLongMessage.create(
       AOwner: TComponent;
@@ -93,9 +136,7 @@ implementation
     );
   	begin
     	inherited create( AOwner );
-      translateUI();
-
-      horizCenterInside( pnlButtons, pnlBase );
+      initialize();
 
       if( 0 <> length( trim( cap ) ) ) then
         self.Caption := cap
@@ -112,6 +153,16 @@ implementation
   ;
 
 
+  procedure TDialogLongMessage.initialize();
+    begin
+      translateUI();
+      horizCenterInside( pnlButtons, pnlBase );
+      _closeFormOnOK := false;
+    end
+  ;
+
+
+  /// Specifies the captions, hints, and other component text phrases for translation
   procedure TDialogLongMessage.translateUI();
     begin
       // This function was generated automatically by Caption Collector 0.6.0.
@@ -131,7 +182,7 @@ implementation
     end
   ;
 
-
+  /// Initializes the dialog form when first created. Applications do not call FormCreate
 	procedure TDialogLongMessage.FormCreate(Sender: TObject);
 		begin
       Assert(not Scaled, 'You should set Scaled property of Form to False!');
@@ -147,19 +198,91 @@ implementation
 	;
 	
 
-  {*
-    Closes the dialog.
-  }
+  /// OnClick event that closes the dialog form.
   procedure TDialogLongMessage.btnOKClick(Sender: TObject);
     begin
-      close();
+      if( _closeFormOnOK ) then
+        close()
+      else
+        hide()
+      ;
     end
   ;
 
-  
+
+  /// Prevents the user from closing the form by disabling the OK button and the title bar close button
+  procedure TDialogLongMessage.disableFormClose();
+    var
+      AppSysMenu: THandle;
+    begin
+      // Clicking on OK will NOT delete the form.  The form will only be hidden.
+      // It will not be possible to use the "close" button to delete the form, either.
+      _closeFormOnOK := false;
+
+      (*
+      btnOK.Enabled := false;
+      *)
+      // See http://www.greatis.com/delphicb/tips/lib/system-hideclose.html
+      AppSysMenu:=GetSystemMenu( Handle, False );
+      EnableMenuItem( AppSysMenu, SC_CLOSE, MF_BYCOMMAND or MF_GRAYED );
+
+    end
+  ;
+
+
+  /// Enables closing the form by enabling the OK button and the title bar close button
+  procedure TDialogLongMessage.enableFormClose();
+    var
+      AppSysMenu: THandle;
+    begin
+      // Clicking on OK will delete the form.
+      // It will now be possible to use the "close" button to delete the form.
+      _closeFormOnOK := true;
+
+      (*
+      btnOK.Enabled := true;
+      *)
+      // See http://www.greatis.com/delphicb/tips/lib/system-hideclose.html
+      AppSysMenu := GetSystemMenu( Handle, False );
+      EnableMenuItem( AppSysMenu, SC_CLOSE, MF_BYCOMMAND or MF_ENABLED );
+    end
+  ;
+
   {*
-    Copies contents of the memo control to the clipboard.
+    Shows the dialog form in the event it had been hidden.
+    @param alwaysOnTop Makes the dialog window stay on top, even when another window has focus
   }
+  procedure TDialogLongMessage.show( const alwaysOnTop: boolean );
+    begin
+      inherited show();
+
+      if( alwaysOnTop ) then
+        begin
+          //Possible values for placement-order handle:
+          //   HWND_BOTTOM: Places the window at the bottom of the Z order.
+          //   HWND_NOTOPMOST: Places the window above all non-topmost windows
+          //   HWND_TOP: Places the window at the top of the Z order.
+          //   HWND_TOPMOST: Places the window above all non-topmost windows.
+          //     The window maintains its topmost position even when it is deactivated.
+          // See http://www.swissdelphicenter.ch/torry/showcode.php?id=6
+
+          SetWindowPos(
+            self.Handle, // handle to window
+            HWND_TOPMOST, // placement-order handle
+            self.Left,  // horizontal position
+            self.Top,   // vertical position
+            self.Width,
+            self.Height,
+            SWP_NOACTIVATE or SWP_NOMOVE or SWP_NOSIZE // window-positioning options
+          );
+        end
+      ;
+    end
+  ;
+
+
+
+  /// Copies contents of the memo control to the clipboard.
   procedure TDialogLongMessage.btnCopyClick(Sender: TObject);
     begin
       mmoLongMessage.SelectAll();
@@ -168,9 +291,7 @@ implementation
   ;
 
 
-  {*
-    Sets the text of the memo control.
-  }
+  /// Sets the text of the memo control.
   procedure TDialogLongMessage.setMessage( msg: string );
     begin
       mmoLongMessage.Lines.Text := msg;
@@ -179,8 +300,26 @@ implementation
 
 
   {*
-    Sets the text of the header ( the panel at the top of the form).
+     Appends text to the memo control.
+     @param msg text to append to the dialog contents
   }
+  procedure TDialogLongMessage.appendMessage( msg: string );
+    begin
+      mmoLongMessage.Lines.Append( msg );
+    end
+  ;
+
+
+  /// Clears the contents of the dialog output text
+  procedure TDialogLongMessage.clear();
+    begin
+      mmoLongMessage.Clear();
+    end
+  ;
+
+
+
+  /// Sets the text of the header ( the panel at the top of the form).
   procedure TDialogLongMessage.setHeader( header: string );
     var
       str: string;

@@ -1,21 +1,30 @@
-unit FrameChartBase;
-
-(*
+{*
 FrameChartBase.pas/dfm
 ----------------------
 Begin: 2005/08/04
-Last revision: $Date: 2008/03/12 22:10:43 $ $Author: areeves $
-Version number: $Revision: 1.17 $
-Project: NAADSM
-Website: http://www.naadsm.org
-Author: Aaron Reeves <Aaron.Reeves@colostate.edu>
+Last revision: $Date: 2010-11-02 18:16:23 $ $Author: rhupalo $
+Version number: $Revision: 1.21 $
+Project: APHI General Purpose Delphi Libary
+Website: http://www.naadsm.org/opensource/delphi/
+Author: Aaron Reeves <Aaron.Reeves@ucalgary.ca>
 --------------------------------------------------
-Copyright (C) 2005 - 2008 Animal Population Health Institute, Colorado State University
+Copyright (C) 2005 - 2010 Colorado State University
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General
 Public License as published by the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
+---------------------------------------------------
+
+This unit defines a base class frame used by forms providing charts showing graphical summaries of
+various outputs - cost relationships and epicurves, and disease, detection, and control status, etc.
+}
+
+(*
+  Documentation generation tags begin with {* or ///
+  Replacing these with (* or // foils the documentation generator
 *)
+
+unit FrameChartBase;
 
 interface
 
@@ -31,10 +40,14 @@ uses
   Chart
 ;
 
-type TFrameChartBase = class( TFrame )
+type
+/// Base class, inheriting from TFrame, for many of the graphical output summary frames and forms
+TFrameChartBase = class( TFrame )
 	protected
+    /// the chart that the public methods of this class operate on
 		_chart: TChart;
-    _ignoreCharts: boolean;
+    /// whether to throw an exception if an instance of a derived class is created with more than one chart
+    _ignoreCharts: boolean;  
 
     function getChartWidth(): integer; virtual;
     function getChartHeight(): integer; virtual;
@@ -49,8 +62,11 @@ type TFrameChartBase = class( TFrame )
     function copyChartToClipboard(): boolean;
     function printChart(): boolean; virtual;
 
+    /// read-only property providing the width of _chart
     property chartWidth: integer read getChartWidth;
+    /// read-only property providing the height of _chart
     property chartHeight: integer read getChartHeight;
+    /// read-only access to _ignoreCharts
     property ignoreCharts: boolean read _ignoreCharts default false;
 
   end
@@ -64,20 +80,28 @@ implementation
     SysUtils,
     ClipBrd,
     MyStrUtils,
-    GuiStrUtils,
     DebugWindow
   ;
 
   const
-    DBSHOWMSG: boolean = false; // Set to true to enable debugging messages for this unit
+    DBSHOWMSG: boolean = false; /// Set to true to enable debugging messages for this unit
 
 //-----------------------------------------------------------------------------
 // Construction/destruction
 //-----------------------------------------------------------------------------
+
+  {*
+     Creates the ChartBase object and ensures the frame only contains one
+     chart unless ignoreCharts is true.
+     @param AOwner the form that owns this instance of the frame
+     @throws An exception is raised if ignoreCharts is not true and the
+     frame (including child controls contains more than one chart.
+  }
 	constructor TFrameChartBase.create( AOwner: TComponent );
     var
       chartCount: integer;
 
+      // recursively examines controls of self to count the number of Chart objects
       procedure lookForChart( cntnr: TWinControl );
         var
           i: integer;
@@ -121,6 +145,7 @@ implementation
 	;
 
 
+  /// destroys the object and frees memory
 	destructor TFrameChartBase.destroy();
 		begin
 			inherited destroy();
@@ -133,10 +158,17 @@ implementation
 //-----------------------------------------------------------------------------
 // Meta file creation
 //-----------------------------------------------------------------------------
+
+  {*
+    Helper function that creates a graphical image of _chart formatted as a metafile
+    @return graphic of chart as an un-enhanced metafile - a .WMF (Windows 3.1 Metafile, with Aldus header)
+    @comment Called by saveChartToFile()
+  }
   function TFrameChartBase.createMetafile(): TMetaFile;
     begin
       dbcout( '_chart is nil: ' + uiBoolToText( nil = _chart ), true );
       if( nil  <> _chart ) then
+        //rbh20101102 Fix Me - does this work? TeeCreateMetafile is defined in TEEPROCS.pas, which is not on my system...
         result := _chart.TeeCreateMetafile( False, Rect(0, 0, _chart.Width, _chart.Height ) )
       else
         result := nil
@@ -150,6 +182,11 @@ implementation
 //-----------------------------------------------------------------------------
 // Chart handling
 //-----------------------------------------------------------------------------
+  {*
+     Saves the chart image as a graphic and writes it to filename
+     @param fileName full path for image file to be created
+     @comment file format is an un-enhanced metafile - a .WMF (Windows 3.1 Metafile, with Aldus header)
+  }
   function TFrameChartBase.saveChartToFile( fileName: string ): boolean;
     Var
       m: TMetafile;
@@ -171,6 +208,10 @@ implementation
   ;
 
 
+  {*
+     Saves an image of _chart to the Windows clipboard
+     @return true if successful, else false
+  }
   function TFrameChartBase.copyChartToClipboard(): boolean;
     var
       m: TMetafile;
@@ -196,6 +237,10 @@ implementation
   ;
 
 
+  {*
+     Attempts to print an image of _chart to the default printer in landscape mode
+     @return false if an exception occurs, else true
+  }
   function TFrameChartBase.printChart(): boolean;
     begin
       try
@@ -217,6 +262,7 @@ implementation
 //-----------------------------------------------------------------------------
 // Chart properties
 //-----------------------------------------------------------------------------
+  /// Get function for property chartWidth, returning the width of _chart
   function TFrameChartBase.getChartWidth(): integer;
     begin
       if( nil  <> _chart ) then
@@ -227,6 +273,7 @@ implementation
     end
   ;
 
+  /// Get function for property chartHeight, returning the height of _chart
   function TFrameChartBase.getChartHeight(): integer;
     begin
       if( nil  <> _chart ) then
