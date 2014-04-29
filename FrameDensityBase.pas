@@ -4,13 +4,13 @@ unit FrameDensityBase;
 FrameDensityBase.pas/dfm
 ----------------------
 Begin: 2008/02/15
-Last revision: $Date: 2008/03/12 21:19:14 $ $Author: areeves $
-Version number: $Revision: 1.2 $
-Project: NAADSM
-Website: http://www.naadsm.org
+Last revision: $Date: 2013-06-27 19:11:22 $ $Author: areeves $
+Version number: $Revision: 1.3.14.1 $
+Project: APHI General Purpose Delphi Libary
+Website: http://www.naadsm.org/opensource/delphi/
 Author: Shaun Case <Shaun.Case@colostate.edu>
 --------------------------------------------------
-Copyright (C) 2005 - 2008 Animal Population Health Institute, Colorado State University
+Copyright (C) 2005 - 2008 Colorado State University
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General
 Public License as published by the Free Software Foundation; either version 2 of the License, or

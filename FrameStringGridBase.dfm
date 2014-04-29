@@ -13,6 +13,7 @@ object FrameStringGridBase: TFrameStringGridBase
     DefaultRowHeight = 19
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking]
     TabOrder = 0
+    OnEnter = stgGridEnter
     OnSelectCell = stgGridSelectCell
     RowHeights = (
       19
@@ -29,13 +30,5 @@ object FrameStringGridBase: TFrameStringGridBase
     Align = alRight
     BevelOuter = bvNone
     TabOrder = 1
-  end
-  object StringGrid1: TStringGrid
-    Left = 0
-    Top = 0
-    Width = 1
-    Height = 1
-    TabOrder = 2
-    Visible = False
   end
 end

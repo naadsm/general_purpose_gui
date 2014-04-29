@@ -1,6 +1,6 @@
 object DialogLongMessage: TDialogLongMessage
-  Left = 287
-  Top = 59
+  Left = 790
+  Top = 62
   Width = 552
   Height = 682
   Caption = 'Form1'
@@ -14,13 +14,13 @@ object DialogLongMessage: TDialogLongMessage
   Position = poOwnerFormCenter
   Scaled = False
   OnCreate = FormCreate
-  PixelsPerInch = 120
+  PixelsPerInch = 96
   TextHeight = 13
   object mmoLongMessage: TMemo
     Left = 10
     Top = 41
     Width = 534
-    Height = 560
+    Height = 565
     Align = alClient
     ReadOnly = True
     ScrollBars = ssVertical
@@ -28,7 +28,7 @@ object DialogLongMessage: TDialogLongMessage
   end
   object pnlBase: TPanel
     Left = 0
-    Top = 601
+    Top = 606
     Width = 544
     Height = 49
     Align = alBottom
@@ -75,7 +75,7 @@ object DialogLongMessage: TDialogLongMessage
     Left = 0
     Top = 41
     Width = 10
-    Height = 560
+    Height = 565
     Align = alLeft
     BevelOuter = bvNone
     TabOrder = 3

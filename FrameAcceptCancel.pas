@@ -1,21 +1,30 @@
-unit FrameAcceptCancel;
-
-(*
+{*
 FrameAcceptCancel.pas/dfm
 -------------------------
 Begin: 2005/11/10
-Last revision: $Date: 2008/03/12 22:10:43 $ $Author: areeves $
-Version number: $Revision: 1.5 $
-Project: NAADSM
-Website: http://www.naadsm.org
-Author: Aaron Reeves <Aaron.Reeves@colostate.edu>
+Last revision: $Date: 2013-06-27 19:11:21 $ $Author: areeves $
+Version number: $Revision: 1.6.14.2 $
+Project: APHI General Purpose Delphi Libary
+Website: http://www.naadsm.org/opensource/delphi/
+Author: Aaron Reeves <Aaron.Reeves@ucalgary.ca>
 --------------------------------------------------
-Copyright (C) 2005 - 2008 Animal Population Health Institute, Colorado State University
+Copyright (C) 2005 - 2010 Colorado State University
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General
 Public License as published by the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
+-----------------------------------------------------
+Click events used from the buttons in this frame can be used on a form to invoke user input validation
+rules on accept, or ignore and clear edits on cancel for one or a series of user input controls.
+
+}
+
+(*
+  Documentation generation tags begin with {* or ///
+  Replacing these with (* or // foils the documentation generator
 *)
+
+unit FrameAcceptCancel;
 
 interface
 
@@ -33,9 +42,11 @@ interface
     Buttons
   ;
 
-  type TFrameAcceptCancel = class( TFrame )
-      btnAccept: TBitBtn;
-      btnCancel: TBitBtn;
+  type
+  /// Buttons providing click events to process something on container form
+  TFrameAcceptCancel = class( TFrame )
+      btnAccept: TBitBtn;  /// provides click event to submit some input entry
+      btnCancel: TBitBtn;  /// provides click event to cancel input entry
 
     protected
       procedure translateUI();
@@ -53,7 +64,11 @@ implementation
   uses
     I88n
   ;
-  
+
+  {*
+    Creates an instance of the frame
+    @param AOwner the form that owns this instance of the frame
+  }
   constructor TFrameAcceptCancel.create( AOwner: TComponent );
     begin
       inherited create( AOwner );
@@ -62,6 +77,7 @@ implementation
   ;
 
 
+  /// Specifies the captions, hints, and other component text phrases for translation
   procedure TFrameAcceptCancel.translateUI();
     begin
       // This function was generated automatically by Caption Collector 0.6.0.
