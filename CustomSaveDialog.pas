@@ -2,8 +2,8 @@
 CustomSaveDialog.pas
 --------------------
 Begin: 2006/04/01
-Last revision: $Date: 2011-01-26 04:33:22 $ $Author: areeves $
-Version number: $Revision: 1.4.20.1 $
+Last revision: $Date: 2011-10-25 05:05:07 $ $Author: areeves $
+Version number: $Revision: 1.7 $
 Project: APHI General Purpose Delphi Libary
 Website: http://www.naadsm.org/opensource/delphi/
 Author: Aaron Reeves <development@reevesdigital.com>

@@ -2,8 +2,8 @@
 FrameFileSelector.pas/dfm
 -------------------------
 Begin: 2005/08/04
-Last revision: $Date: 2011-01-26 04:33:22 $ $Author: areeves $
-Version number: $Revision: 1.12.6.1 $
+Last revision: $Date: 2010-11-03 18:41:47 $ $Author: rhupalo $
+Version number: $Revision: 1.14 $
 Project: APHI General Purpose Delphi Libary
 Website: http://www.naadsm.org/opensource/delphi/
 Author: Aaron Reeves <Aaron.Reeves@ucalgary.ca>
