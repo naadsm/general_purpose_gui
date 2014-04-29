@@ -2,8 +2,8 @@
 FormProgress.pas/dfm
 ---------------------
 Begin: 2005/07/14
-Last revision: $Date: 2011-01-26 04:33:22 $ $Author: areeves $
-Version number: $Revision: 1.16.12.3 $
+Last revision: $Date: 2010-11-01 20:40:51 $ $Author: rhupalo $
+Version number: $Revision: 1.21 $
 Project: APHI General Purpose Delphi Libary
 Website: http://www.naadsm.org/opensource/delphi/
 Author: Aaron Reeves <Aaron.Reeves@ucalgary.ca>

@@ -4,6 +4,8 @@ FrameAcceptCancel.pas/dfm
 Begin: 2005/11/10
 Last revision: $Date: 2011-01-26 04:33:22 $ $Author: areeves $
 Version number: $Revision: 1.6.20.1 $
+Last revision: $Date: 2010-11-02 18:16:23 $ $Author: rhupalo $
+Version number: $Revision: 1.8 $
 Project: APHI General Purpose Delphi Libary
 Website: http://www.naadsm.org/opensource/delphi/
 Author: Aaron Reeves <Aaron.Reeves@ucalgary.ca>
