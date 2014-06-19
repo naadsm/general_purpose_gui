@@ -6,7 +6,7 @@ Last revision: $Date: 2011-10-25 05:05:07 $ $Author: areeves $
 Version number: $Revision: 1.7 $
 Project: APHI General Purpose Delphi Libary
 Website: http://www.naadsm.org/opensource/delphi/
-Author: Aaron Reeves <development@reevesdigital.com>
+Author: Aaron Reeves <aaron.reeves@naadsm.org>
 ----------------------------------------------------
 Copyright (C) 2010 Aaron Reeves
 

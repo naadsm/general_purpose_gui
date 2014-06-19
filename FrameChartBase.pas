@@ -6,7 +6,7 @@ Last revision: $Date: 2010-11-02 18:16:23 $ $Author: rhupalo $
 Version number: $Revision: 1.21 $
 Project: APHI General Purpose Delphi Libary
 Website: http://www.naadsm.org/opensource/delphi/
-Author: Aaron Reeves <Aaron.Reeves@ucalgary.ca>
+Author: Aaron Reeves <aaron.reeves@naadsm.org>
 --------------------------------------------------
 Copyright (C) 2005 - 2010 Animal Population Health Institute, Colorado State University
 
